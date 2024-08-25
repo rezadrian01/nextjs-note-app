@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useFormState } from "react-dom";
+import { AnimatePresence } from "framer-motion";
 
 import Input from "./input";
 import Image from "next/image";
@@ -75,7 +76,9 @@ export default function AddButton() {
   }
   return (
     <>
-      {isAdd && <AddNoteModal onClose={toggleAddClick} />}
+      <AnimatePresence>
+        {isAdd && <AddNoteModal onClose={toggleAddClick} />}
+      </AnimatePresence>
       <button
         onClick={toggleAddClick}
         className="fixed bg-blue-500 p-4 w-10 aspect-square rounded-full right-8 bottom-8"

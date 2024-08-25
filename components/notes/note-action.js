@@ -9,6 +9,7 @@ import trashIcon from "@/public/trash.svg";
 import closeLogo from "@/public/close.svg";
 import Image from "next/image";
 import { deleteNote, updateNote } from "@/actions/note";
+import { AnimatePresence } from "framer-motion";
 
 function EditModal({ onClose, note }) {
   const [state, formAction] = useFormState(updateNote, {});
@@ -78,22 +79,11 @@ export default function NoteActions({ note }) {
     setIsEditing((prevState) => !prevState);
   }
 
-  function handleDeleteSubmit(event) {
-    event.preventDefault();
-    console.log(note.id);
-    deleteNote(note.id);
-  }
-
-  function handleStartDelete() {
-    const proceed = window.confirm("Are you sure?");
-    if (proceed) {
-      deleteFormRef.current.submit();
-    }
-  }
-
   return (
     <>
-      {isEditing && <EditModal onClose={toggleEditClick} note={note} />}
+      <AnimatePresence>
+        {isEditing && <EditModal onClose={toggleEditClick} note={note} />}
+      </AnimatePresence>
       <div className="relative flex gap-4 justify-end">
         <button
           onClick={toggleEditClick}
@@ -103,11 +93,7 @@ export default function NoteActions({ note }) {
           <Image src={pencilIcon} alt="Pencil Icon" />
         </button>
         <form ref={deleteFormRef} action={() => deleteNote(note.id)}>
-          <button
-            // onClick={handleStartDelete}
-            // type="button"
-            className=" w-[.8rem] aspect-square rounded-full"
-          >
+          <button className=" w-[.8rem] aspect-square rounded-full">
             <Image src={trashIcon} alt="Trash Icon" />
           </button>
         </form>

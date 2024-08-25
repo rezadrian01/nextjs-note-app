@@ -57,7 +57,6 @@ export async function updateNote(prevState, formData) {
 
 export async function deleteNote(id) {
   const notes = await getNotes();
-  console.log(id);
   const filteredNotes = notes.filter((noteItem) => noteItem.id !== id);
   await writeFile(filePath, JSON.stringify(filteredNotes));
   revalidatePath("/");
