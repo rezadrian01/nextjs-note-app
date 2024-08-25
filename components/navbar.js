@@ -10,11 +10,16 @@ export default function Navbar() {
       </Link>
       <div className="relative col-span-6">
         <input
+          type="search"
           placeholder="Search..."
           className="outline-none bg-slate-100 w-full p-2 rounded pr-9"
         />
         <button>
-          <Image src={searchLogo} className="absolute w-6 h-6 right-2 top-2" />
+          <Image
+            alt="Search logo"
+            src={searchLogo}
+            className="absolute w-6 h-6 right-2 top-2"
+          />
         </button>
       </div>
       <div className="flex gap-2 col-span-3 justify-end">
