@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { readFile, writeFile } from "node:fs/promises";
 
 const filePath = "./data/notes.json";
@@ -17,10 +18,18 @@ export async function getNote(id) {
   return note;
 }
 
-export async function createNote(note) {
+export async function createNote(formData) {
+  const note = {
+    id: Math.random(),
+    title: formData.get("title"),
+    date: formData.get("date"),
+    content: formData.get("content"),
+    tags: formData.get("tags").split(","),
+  };
   const notes = await getNotes();
-  notes.push({ ...note });
+  notes.push(note);
   await writeFile(filePath, JSON.stringify(notes));
+  revalidatePath("/");
 }
 
 export async function updateNote(id, noteData) {

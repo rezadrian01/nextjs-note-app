@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import plusIcon from "@/public/plusIcon.svg";
+import { useState, useRef } from "react";
+import { useFormState } from "react";
 import Image from "next/image";
+import plusIcon from "@/public/plusIcon.svg";
 import Modal from "./modal";
 import closeLogo from "@/public/close.svg";
-import { useRef } from "react";
-import { getNotes } from "@/actions/note";
+import { createNote } from "@/actions/note";
 
 function Input({ label, name, date, tags, onAdd }) {
   const inputRef = useRef(null);
@@ -21,7 +21,7 @@ function Input({ label, name, date, tags, onAdd }) {
         type={date ? "date" : "text"}
         placeholder={label}
         name={name}
-        required
+        required={tags ? false : true}
         ref={inputRef}
       />
       {tags && (
@@ -39,6 +39,7 @@ function Input({ label, name, date, tags, onAdd }) {
 
 function AddNoteModal({ onClose }) {
   const [tags, setTags] = useState([]);
+  const [state, formAction] = useFormState();
   function handleAddTag(tag) {
     setTags((prevTags) => [...prevTags, tag]);
   }
@@ -51,7 +52,7 @@ function AddNoteModal({ onClose }) {
   }
   return (
     <Modal onClose={onClose}>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" action={createNote}>
         <Input name="title" label="Title" />
         <Input name="content" label="Content" />
         <Input name="date" label="Date" date />
@@ -76,7 +77,7 @@ function AddNoteModal({ onClose }) {
             })}
           </ul>
         )}
-        <input type="hidden" name="tag" defaultValue={tags} />
+        <input type="hidden" name="tags" defaultValue={tags} />
         <Input label="Tags" tags onAdd={handleAddTag} />
         <div className="flex justify-end gap-4 mt-4">
           <button type="button" onClick={onClose}>
