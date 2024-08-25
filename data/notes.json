@@ -2,15 +2,50 @@
   {
     "id": 1,
     "title": "Title 1",
-    "date": "17-8-2024",
+    "date": "2024-08-25",
     "content": "Testing Content Does this work?",
     "tags": ["Tag 1", "Tag 2", "Tag 3"]
   },
   {
-    "id": 0.28700242005858567,
     "title": "Note 2",
-    "date": "2024-08-25",
     "content": "Does this work",
-    "tags": ["Sport", "Entertainment"]
+    "date": "2024-08-25",
+    "tags": ["Sport", "Entertainment", "Tes"]
+  },
+  {
+    "id": 0.6615596685183129,
+    "title": "Testing",
+    "date": "2024-08-25",
+    "content": "Testing",
+    "tags": ["Developer", "Development"]
+  },
+  {
+    "id": 0.9181424039344976,
+    "title": "Testing tags",
+    "date": "2024-08-26",
+    "content": "Testing Tags",
+    "tags": [
+      "Developer",
+      "Development",
+      "Fullstack",
+      "Web Developer",
+      "Framework",
+      "Library",
+      "Javascript"
+    ]
+  },
+  {
+    "id": 0.6217826376652995,
+    "title": "Testing",
+    "date": "2024-08-25",
+    "content": "Testing input component",
+    "tags": ["Test", "Component"]
+  },
+  {
+    "id": 0.931228658678183,
+    "title": "Testing again",
+    "date": "2024-08-25",
+    "content": "Again",
+    "tags": ["Testing"]
   }
 ]

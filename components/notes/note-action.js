@@ -1,25 +1,24 @@
 "use client";
-
 import { useState } from "react";
 import { useFormState } from "react-dom";
 
-import Input from "./input";
-import Image from "next/image";
-import plusIcon from "@/public/plusIcon.svg";
-import Modal from "./modal";
+import Modal from "../modal";
+import Input from "../input";
+import pencilIcon from "@/public/pencil.svg";
+import trashIcon from "@/public/trash.svg";
 import closeLogo from "@/public/close.svg";
-import { createNote } from "@/actions/note";
+import Image from "next/image";
+import { updateNote } from "@/actions/note";
 
-function AddNoteModal({ onClose }) {
-  const [tags, setTags] = useState([]);
-  const [state, formAction] = useFormState(createNote, {});
+function EditModal({ onClose, note }) {
+  const [state, formAction] = useFormState(updateNote, {});
+  const [tags, setTags] = useState([...note.tags]);
   function handleAddTag(tag) {
     setTags((prevTags) => [...prevTags, tag]);
   }
   function handleRemoveTag(tag) {
     setTags((prevTags) => {
-      const updatedTags = [...prevTags];
-      const filteredTags = updatedTags.filter((tagItem) => tagItem !== tag);
+      const filteredTags = prevTags.filter((tagItem) => tagItem !== tag);
       return filteredTags;
     });
   }
@@ -29,9 +28,9 @@ function AddNoteModal({ onClose }) {
   return (
     <Modal onClose={onClose}>
       <form className="flex flex-col gap-4" action={formAction}>
-        <Input name="title" label="Title" />
-        <Input name="content" label="Content" />
-        <Input name="date" label="Date" date />
+        <Input name="title" label="Title" defaultValue={note.title} />
+        <Input name="content" label="Content" defaultValue={note.content} />
+        <Input name="date" label="Date" date defaultValue={note.date} />
         {tags.length > 0 && (
           <ul className="flex flex-wrap gap-4 mt-2">
             {tags.map((tag, index) => {
@@ -53,13 +52,17 @@ function AddNoteModal({ onClose }) {
             })}
           </ul>
         )}
+        <input type="hidden" name="noteId" defaultValue={note.id} />
         <input type="hidden" name="tags" defaultValue={tags} />
         <Input label="Tags" tags onAdd={handleAddTag} />
         <div className="flex justify-end gap-4 mt-4">
           <button type="button" onClick={onClose}>
             Cancel
           </button>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white rounded p-1">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white rounded p-1"
+          >
             Submit
           </button>
         </div>
@@ -68,24 +71,26 @@ function AddNoteModal({ onClose }) {
   );
 }
 
-export default function AddButton() {
-  const [isAdd, setIsAdd] = useState(false);
-  function toggleAddClick() {
-    setIsAdd((prevState) => !prevState);
+export default function NoteActions({ note }) {
+  const [isEditing, setIsEditing] = useState(false);
+  function toggleEditClick() {
+    setIsEditing((prevState) => !prevState);
   }
   return (
     <>
-      {isAdd && <AddNoteModal onClose={toggleAddClick} />}
-      <button
-        onClick={toggleAddClick}
-        className="fixed bg-blue-500 p-4 w-10 aspect-square rounded-full right-8 bottom-8"
-      >
-        <Image
-          alt="Plus Icon"
-          className="absolute right-2 top-2"
-          src={plusIcon}
-        />
-      </button>
+      {isEditing && <EditModal onClose={toggleEditClick} note={note} />}
+      <div className="relative flex gap-4 justify-end">
+        <button
+          onClick={toggleEditClick}
+          type="button"
+          className=" w-[.8rem] aspect-square rounded-full"
+        >
+          <Image src={pencilIcon} alt="Pencil Icon" />
+        </button>
+        <button type="button" className=" w-[.8rem] aspect-square rounded-full">
+          <Image src={trashIcon} alt="Trash Icon" />
+        </button>
+      </div>
     </>
   );
 }

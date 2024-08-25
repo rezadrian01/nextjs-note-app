@@ -18,7 +18,7 @@ export async function getNote(id) {
   return note;
 }
 
-export async function createNote(formData) {
+export async function createNote(prevState, formData) {
   const note = {
     id: Math.random(),
     title: formData.get("title"),
@@ -30,14 +30,24 @@ export async function createNote(formData) {
   notes.push(note);
   await writeFile(filePath, JSON.stringify(notes));
   revalidatePath("/");
+  return { success: true };
 }
 
-export async function updateNote(id, noteData) {
+export async function updateNote(prevState, formData) {
   const notes = await getNotes();
-  const existingNoteIndex = notes.findIndex((noteItem) => noteItem.id === id);
+  const id = formData.get("noteId");
+  const existingNoteIndex = notes.findIndex((noteItem) => noteItem.id === +id);
   if (existingNoteIndex === -1) return;
+  const noteData = {
+    title: formData.get("title"),
+    content: formData.get("content"),
+    date: formData.get("date"),
+    tags: formData.get("tags").split(","),
+  };
   notes[existingNoteIndex] = { ...noteData };
-  await writeFile(filePath, notes);
+  await writeFile(filePath, JSON.stringify(notes));
+  revalidatePath("/");
+  return { success: true };
 }
 
 export async function deleteNote(id) {

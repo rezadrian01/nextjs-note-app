@@ -1,3 +1,5 @@
+import NoteActions from "./note-action";
+
 export default function NoteItem({ note }) {
   const formattedDate = new Date(note.date).toLocaleDateString("en-US", {
     day: "numeric",
@@ -12,7 +14,7 @@ export default function NoteItem({ note }) {
       </div>
       <div>
         <p>{note.content}</p>
-        <ul className="flex gap-2 mt-2">
+        <ul className="flex flex-wrap gap-2 mt-2">
           {note?.tags?.map((tag, index) => {
             return (
               <li
@@ -25,6 +27,7 @@ export default function NoteItem({ note }) {
           })}
         </ul>
       </div>
+      <NoteActions note={note} />
     </div>
   );
 }
