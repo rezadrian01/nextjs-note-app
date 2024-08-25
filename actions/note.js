@@ -38,11 +38,16 @@ export async function updateNote(prevState, formData) {
   const id = formData.get("noteId");
   const existingNoteIndex = notes.findIndex((noteItem) => noteItem.id === +id);
   if (existingNoteIndex === -1) return;
+  const tags =
+    formData.get("tags").split(",")[0] === ""
+      ? []
+      : formData.get("tags").split(",");
   const noteData = {
+    id,
     title: formData.get("title"),
     content: formData.get("content"),
     date: formData.get("date"),
-    tags: formData.get("tags").split(","),
+    tags,
   };
   notes[existingNoteIndex] = { ...noteData };
   await writeFile(filePath, JSON.stringify(notes));
@@ -52,6 +57,8 @@ export async function updateNote(prevState, formData) {
 
 export async function deleteNote(id) {
   const notes = await getNotes();
+  console.log(id);
   const filteredNotes = notes.filter((noteItem) => noteItem.id !== id);
-  await writeFile(filePath, filteredNotes);
+  await writeFile(filePath, JSON.stringify(filteredNotes));
+  revalidatePath("/");
 }

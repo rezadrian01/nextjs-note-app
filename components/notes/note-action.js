@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useFormState } from "react-dom";
 
 import Modal from "../modal";
@@ -8,7 +8,7 @@ import pencilIcon from "@/public/pencil.svg";
 import trashIcon from "@/public/trash.svg";
 import closeLogo from "@/public/close.svg";
 import Image from "next/image";
-import { updateNote } from "@/actions/note";
+import { deleteNote, updateNote } from "@/actions/note";
 
 function EditModal({ onClose, note }) {
   const [state, formAction] = useFormState(updateNote, {});
@@ -72,10 +72,25 @@ function EditModal({ onClose, note }) {
 }
 
 export default function NoteActions({ note }) {
+  const deleteFormRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   function toggleEditClick() {
     setIsEditing((prevState) => !prevState);
   }
+
+  function handleDeleteSubmit(event) {
+    event.preventDefault();
+    console.log(note.id);
+    deleteNote(note.id);
+  }
+
+  function handleStartDelete() {
+    const proceed = window.confirm("Are you sure?");
+    if (proceed) {
+      deleteFormRef.current.submit();
+    }
+  }
+
   return (
     <>
       {isEditing && <EditModal onClose={toggleEditClick} note={note} />}
@@ -87,9 +102,15 @@ export default function NoteActions({ note }) {
         >
           <Image src={pencilIcon} alt="Pencil Icon" />
         </button>
-        <button type="button" className=" w-[.8rem] aspect-square rounded-full">
-          <Image src={trashIcon} alt="Trash Icon" />
-        </button>
+        <form ref={deleteFormRef} action={() => deleteNote(note.id)}>
+          <button
+            // onClick={handleStartDelete}
+            // type="button"
+            className=" w-[.8rem] aspect-square rounded-full"
+          >
+            <Image src={trashIcon} alt="Trash Icon" />
+          </button>
+        </form>
       </div>
     </>
   );

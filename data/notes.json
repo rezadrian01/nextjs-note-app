@@ -7,6 +7,7 @@
     "tags": ["Tag 1", "Tag 2", "Tag 3"]
   },
   {
+    "id": 2,
     "title": "Note 2",
     "content": "Does this work",
     "date": "2024-08-25",
@@ -35,17 +36,10 @@
     ]
   },
   {
-    "id": 0.6217826376652995,
-    "title": "Testing",
+    "id": 0.6120893469989681,
+    "title": "Why this id have a string type",
     "date": "2024-08-25",
-    "content": "Testing input component",
-    "tags": ["Test", "Component"]
-  },
-  {
-    "id": 0.931228658678183,
-    "title": "Testing again",
-    "date": "2024-08-25",
-    "content": "Again",
+    "content": "string",
     "tags": ["Testing"]
   }
 ]
